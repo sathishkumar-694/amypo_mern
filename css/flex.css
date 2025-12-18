@@ -1,0 +1,23 @@
+.con
+{
+    display: flex;
+    flex-direction:row-reverse;
+    border:10px solid red;
+    flex-wrap:wrap;
+    gap:20px;
+   
+}
+.pic
+{
+     border:5px solid;
+     width:140px;
+     padding:5px;
+     height:120px;
+     
+}
+img{
+    width:140px;
+    height:120px;
+    
+}
+
