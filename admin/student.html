@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIT - Students</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Navbar Starts -->
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand">BIT</span>
+        <a href="login.html" class="btn btn-danger btn-sm">Logout</a>
+      </div>
+    </nav>
+    <!-- Navbar Ends -->
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar Starts -->
+        <div class="col-md-2 bg-light vh-100 p-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Student</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="department.html">Department</a>
+            </li>
+          </ul>
+        </div>
+        <!-- Sidebar Ends -->
+
+        <div class="col-md-10 p-4">
+          <div class="row">
+            <h3>Students</h3>
+            <form action="">
+              <label for="name" class="form-label">Student Name</label>
+              <input type="text" class="form-control" />
+
+              <label for="register" class="form-label">Register No</label>
+              <input type="text" class="form-control" />
+
+              <label for="email" class="form-label">Student Email</label>
+              <input type="email" class="form-control" />
+
+              <label for="phone" class="form-label">Student Phone</label>
+              <input type="number" class="form-control" />
+
+              <label for="department" class="form-label">Department</label>
+              <input type="text" class="form-control" />
+
+              <button type="submit" class="btn btn-success">Save</button>
+            </form>
+          </div>
+
+          <div class="row mt-3">
+            <h3>Students List</h3>
+            <table class="table table-hover">
+              <tr>
+                <th>S.No</th>
+                <th>Student Name</th>
+                <th>Register No</th>
+                <th>Email</th>
+                <th>Phone No</th>
+                <th></th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Manoj Kumar N M</td>
+                <td>732411205020</td>
+                <td>manoj@amypo.com</td>
+                <td>B.Tech IT</td>
+                <td>
+                  <button class="btn btn-warning">Edit</button> &nbsp;
+                  <button class="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Arockia Bilgates</td>
+                <td>732411205022</td>
+                <td>bilgates@amypo.com</td>
+                <td>B.E CSE</td>
+                <td>
+                  <button class="btn btn-warning">Edit</button> &nbsp;
+                  <button class="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
