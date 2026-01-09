@@ -9,6 +9,7 @@ const Comments = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [body, setBody] = useState("");
+
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({
     name: "",
@@ -17,15 +18,16 @@ const Comments = () => {
   });
 
   useEffect(() => {
-    axios.get(API_URL).then((res) => setComments(res.data.slice(0, 20)));
+    axios.get(API_URL).then((res) => setComments(res.data.slice(0, 50)));
   }, []);
 
-  //=============================================
+  // -------------------- CREATE --------------------
   const addComment = () => {
     if (!name || !email || !body) {
       alert("All fields required");
       return;
     }
+
     axios
       .post(API_URL, {
         name,
@@ -34,11 +36,13 @@ const Comments = () => {
         userId: 1,
       })
       .then((res) => setComments([...comments, res.data]));
+
     setName("");
     setEmail("");
     setBody("");
   };
-  //=============================================
+
+  // -------------------- START EDIT --------------------
   const editStart = (c) => {
     setEditId(c.id);
     setEditData({
@@ -48,23 +52,24 @@ const Comments = () => {
     });
   };
 
-  //=============================================
-
+  // -------------------- DELETE --------------------
   const deleteComment = (id) => {
-    if(!window.confirm("Are you sure?"))return;
-    
+    if (!window.confirm("Are you sure want to delete?")) return;
+
     axios
       .delete(`${API_URL}/${id}`)
       .then(() => setComments(comments.filter((c) => c.id !== id)));
   };
-  //=============================================
 
-  //==================================================
+  // -------------------- UPDATE --------------------
   const updateEdit = () => {
     if (!editData.name || !editData.email || !editData.body) {
-      alert("fields should not be empty");
+      alert("Fields should not be empty");
       return;
     }
+
+    if (!window.confirm("Are you sure want to update?")) return;
+
     axios
       .put(`${API_URL}/${editId}`, {
         name: editData.name,
@@ -73,50 +78,87 @@ const Comments = () => {
         userId: 1,
       })
       .then((res) => {
-        setComments(comments.map((c) => (c.id === editId ? res.data : c)));
+        setComments(
+          comments.map((c) => (c.id === editId ? res.data : c))
+        );
         setEditId(null);
-        setEditData({
-          name: "",
-          email: "",
-          body: "",
-        });
+        setEditData({ name: "", email: "", body: "" });
       });
   };
-  //==================================================
 
-  //==================================================
+  // -------------------- CANCEL EDIT --------------------
   const cancelEdit = () => {
     setEditId(null);
-
-    setEditData({
-      name: "",
-      email: "",
-      body: "",
-    });
+    setEditData({ name: "", email: "", body: "" });
   };
-  //==================================================
+//==========================================================
+const clearText =()=>
+{
+  setBody("")
+  setName("")
+  setEmail("")
+}
+//==========================================================
+  // -------------------- UI --------------------
   return (
-    <div>
-      <h3>Comments list</h3>
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Body</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+    <div className="container mt-4 d-flex justify-content-center">
+      <div style={{ width: "85%" }}>
+        <h3>Comments List</h3>
 
-        <tbody>
-          {comments.map((c) => {
-            return (
+        <table className="table table-bordered table-sm align-middle">
+          <thead>
+            <tr>
+              <th style={{ width: "5%" }}>ID</th>
+              <th style={{ width: "20%" }}>Name</th>
+              <th style={{ width: "25%" }}>Email</th>
+              <th style={{ width: "35%" }}>Body</th>
+              <th style={{ width: "20%" }}>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td></td>
+              <td>
+                <input
+                  className="form-control"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control"
+                  placeholder="Enter body"
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                />
+              </td>
+              <td style={{padding:"10px"}}>
+              <div className="d-flex gap-2 justify-content-center">
+                <Button onClick={addComment} className="btn btn-primary">
+                  Add
+                </Button>
+                <Button onClick={clearText} className="btn btn-danger">Clear</Button>
+                </div>
+              </td>
+              
+            </tr>
+            {comments.map((c) => (
               <tr key={c.id}>
                 <td>{c.id}</td>
 
-                {/* edit input inline */}
-                <td>
+                {/* NAME */}
+                <td style={{ maxWidth: "200px" }}>
                   {editId === c.id ? (
                     <input
                       className="form-control"
@@ -130,80 +172,77 @@ const Comments = () => {
                   )}
                 </td>
 
-                <td>{
-                (c.id===editId)
-                ?(<input className="form-control" value = {editData.email} 
-                onChange = {(e)=>setEditData({
-                  ...editData,email : e.target.value
-                })}/>)
-                :(c.email)
-                }</td>
-                <td>{c.id === editId ? (<input className="form-control" value = {editData.body}
-                onChange = {(e)=>setEditData({...editData,body:e.target.value})}/>) :(c.body)}</td>
-
-                <td>
-                  {editId !== c.id ? (
-                    <>
-                      <Button
-                        onClick={() => editStart(c)}
-                        className="btn btn-secondary"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => deleteComment(c.id)}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </Button>
-                    </>
+                {/* EMAIL */}
+                <td    style={{ maxWidth: "220px" }}>
+                  {editId === c.id ? (
+                    <input
+                      className="form-control"
+                      value={editData.email}
+                      onChange={(e) =>
+                        setEditData({ ...editData, email: e.target.value })
+                      }
+                    />
                   ) : (
-                    <>
-                      <Button onClick={updateEdit}>Update</Button>
-                      <Button onClick={cancelEdit}>Cancel</Button>
-                    </>
+                    c.email
                   )}
                 </td>
-              </tr>
-            );
-          })}
-        </tbody>
 
-        <tfoot>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                className="form-control"
-                placeholder="enter the name"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-            </td>
-            <td>
-              <input
-                className="form-control"
-                placeholder="enter the email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </td>
-            <td>
-              <input
-                className="form-control"
-                placeholder="enter body"
-                onChange={(e) => setBody(e.target.value)}
-                value={body}
-              />
-            </td>
-            <td>
-              <Button onClick={addComment} className="btn btn-primary">
-                Add
-              </Button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+                {/* BODY */}
+                <td    style={{ maxWidth: "350px" }}>
+                  {editId === c.id ? (
+                    <input
+                      className="form-control"
+                      value={editData.body}
+                      onChange={(e) =>
+                        setEditData({ ...editData, body: e.target.value })
+                      }
+                    />
+                  ) : (
+                    c.body
+                  )}
+                </td>
+
+                {/* ACTIONS */}
+                <td style={{padding:"10px"}}>
+                  <div className="d-flex gap-2 justify-content-center ">
+                    {editId === c.id ? (
+                      <>
+                        <Button
+                          className="btn btn-success"
+                          onClick={updateEdit}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          className="btn btn-secondary"
+                          onClick={cancelEdit}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          className="btn btn-primary"
+                          onClick={() => editStart(c)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          className="btn btn-danger"
+                          onClick={() => deleteComment(c.id)}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
