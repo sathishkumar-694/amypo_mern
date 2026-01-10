@@ -1,11 +1,11 @@
+import logo from './logo.svg';
 import './App.css';
-import Posts from './components/Posts';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Post from './components/Post';
 
 function App() {
   return (
     <div className="App">
-      <Posts/>
+      <Post/>
       </div>
   );
 }
